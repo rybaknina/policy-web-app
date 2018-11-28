@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
+// @Transactional ++
 
 
     @Override
