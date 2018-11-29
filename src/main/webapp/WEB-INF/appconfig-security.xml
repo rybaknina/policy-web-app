@@ -12,7 +12,7 @@
         <intercept-url pattern="/welcome" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
         <intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>
         <form-login login-page="/login" default-target-url="/welcome" authentication-failure-url="/login?error"
-                    username-parameter="username" password-parameter="password"/>
+                    />
         <logout logout-success-url="/login?logout" />
     </http>
 
@@ -22,8 +22,7 @@
         </authentication-provider>
     </authentication-manager>
 
-    <beans:bean id="userDetailsServiceImpl" class="com.helmes.spring.service.UserDetailsServiceImpl">
-    </beans:bean>
+    <beans:bean id="userDetailsServiceImpl" class="com.helmes.spring.service.UserDetailsServiceImpl"></beans:bean>
 
     <beans:bean id="encoder"
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">

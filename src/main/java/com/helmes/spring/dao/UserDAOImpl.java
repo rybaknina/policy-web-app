@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class UserDAOImpl implements UserDAO {
     private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
 
-
+    @Autowired
     private SessionFactory sessionFactory;
 
     public void setSessionFactory(SessionFactory sf){
@@ -30,7 +30,7 @@ public class UserDAOImpl implements UserDAO {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-
+    @Transactional
     public void save(User user) {
         Session session = this.sessionFactory.getCurrentSession();
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -41,7 +41,7 @@ public class UserDAOImpl implements UserDAO {
         logger.info("User saved successfully, User Details="+user);
     }
     @Override
-
+    @Transactional
     public User findByUsername(String username) {
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery("from User where username = :username");

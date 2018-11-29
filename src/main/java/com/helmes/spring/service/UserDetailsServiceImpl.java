@@ -5,6 +5,7 @@ import com.helmes.spring.dao.UserDAO;
 import com.helmes.spring.model.Role;
 import com.helmes.spring.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-@Service
+//@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserDAO userDAO;
