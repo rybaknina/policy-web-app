@@ -2,7 +2,6 @@ package com.helmes.spring.service;
 
 import com.helmes.spring.dao.RoleDAO;
 import com.helmes.spring.dao.UserDAO;
-import com.helmes.spring.model.Role;
 import com.helmes.spring.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +17,8 @@ public class UserServiceImpl implements UserService{
     private UserDAO userDAO;
     @Autowired
     private RoleDAO roleDAO;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
@@ -26,22 +27,16 @@ public class UserServiceImpl implements UserService{
     public void setRoleDAO(RoleDAO roleDAO) {
         this.roleDAO = roleDAO;
     }
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-// @Transactional ++
-
 
     @Override
     @Transactional
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new ArrayList<Role>(this.roleDAO.findAll()));
+        user.setRoles(new ArrayList<>(this.roleDAO.findAll()));
         this.userDAO.save(user);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public User findByUsername(String username) {
         return this.userDAO.findByUsername(username);
     }
