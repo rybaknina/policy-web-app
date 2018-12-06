@@ -32,13 +32,13 @@ public class PolicyServiceImpl implements PolicyService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public PaginationResult<Policy> listPolicys(int page, int maxResult, int maxNavigationPage) {
         return this.policyDAO.listPolicys(page, maxResult, maxNavigationPage);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Policy getPolicyById(int id) {
         return this.policyDAO.getPolicyById(id);
     }
@@ -49,7 +49,7 @@ public class PolicyServiceImpl implements PolicyService {
         this.policyDAO.removePolicy(id);
     }
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Policy> findPolicys(BigDecimal pricef, String typef, Boolean activef) {
         return this.policyDAO.findPolicys(pricef, typef, activef);
     }

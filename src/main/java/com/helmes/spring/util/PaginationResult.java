@@ -20,6 +20,7 @@ public class PaginationResult<E> {
     private List<Integer> navigationPages;
 
     // @page: 1, 2, ..
+    @SuppressWarnings("unchecked")
     public PaginationResult(Query query, int page, int maxResult, int maxNavigationPage) {
         final int pageIndex = page - 1 < 0 ? 0 : page - 1;
 
@@ -28,7 +29,7 @@ public class PaginationResult<E> {
 
         ScrollableResults resultScroll = query.scroll(ScrollMode.SCROLL_INSENSITIVE);
 
-        List results = new ArrayList();
+        List<E> results = new ArrayList<E>();
 
         boolean hasResult = resultScroll.first();
 
@@ -53,8 +54,12 @@ public class PaginationResult<E> {
         this.currentPage = pageIndex + 1;
         this.list = results;
         this.maxResult = maxResult;
-
-        this.totalPages = (this.totalRecords / this.maxResult) + 1;
+        if (this.totalRecords % this.maxResult == 0) {
+            this.totalPages = this.totalRecords / this.maxResult;
+        } else {
+            this.totalPages = (this.totalRecords / this.maxResult) + 1;
+        }
+        //this.totalPages = (this.totalRecords / this.maxResult) + 1;
         this.maxNavigationPage = maxNavigationPage;
 
         if (maxNavigationPage < totalPages) {

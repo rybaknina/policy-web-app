@@ -23,7 +23,7 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
     @Override
-    @Transactional
+//    @Transactional(readOnly = true)
     public List<Role> findAll() {
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Role");

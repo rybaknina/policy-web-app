@@ -28,7 +28,7 @@ public class PolicyDAOImpl implements PolicyDAO {
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public void addPolicy(Policy p) {
         Session session = this.sessionFactory.getCurrentSession();
 
@@ -37,7 +37,7 @@ public class PolicyDAOImpl implements PolicyDAO {
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public void updatePolicy(Policy p) {
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery("update Policy set price = :price, id_type = :type, is_active = :active where id = :id");
@@ -53,7 +53,7 @@ public class PolicyDAOImpl implements PolicyDAO {
 
     @SuppressWarnings("unchecked")
     @Override
-    @Transactional
+//    @Transactional(readOnly = true)
     public PaginationResult<Policy> listPolicys(int page, int maxResult, int maxNavigationPage) {
         Session session = this.sessionFactory.getCurrentSession();
 
@@ -70,7 +70,7 @@ public class PolicyDAOImpl implements PolicyDAO {
 
 
     @Override
-    @Transactional
+//    @Transactional(readOnly = true)
     public Policy getPolicyById(int id) {
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Policy where id = :id ");
@@ -84,7 +84,7 @@ public class PolicyDAOImpl implements PolicyDAO {
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public void removePolicy(int id) {
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery("update Policy set is_delete = true, is_active = false where id = :id ");
@@ -98,7 +98,7 @@ public class PolicyDAOImpl implements PolicyDAO {
     }
 
     @Override
-    @Transactional
+ //   @Transactional(readOnly = true)
     public List<Policy> findPolicys(BigDecimal pricef, String typef, Boolean activef) {
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery(sqlfindlist);

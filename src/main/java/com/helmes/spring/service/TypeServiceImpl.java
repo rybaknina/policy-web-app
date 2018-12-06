@@ -18,18 +18,18 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Type> getAllTypes() {
         return this.typeDAO.getAllTypes();
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Type getTypeById(String id) {
         return this.typeDAO.getTypeById(id);
     }
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Map<String, String> getMapTypes() {
         return this.typeDAO.getMapTypes();
     }

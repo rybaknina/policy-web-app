@@ -30,7 +30,7 @@ public class UserDAOImpl implements UserDAO {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    @Transactional
+//    @Transactional
     public void save(User user) {
         Session session = this.sessionFactory.getCurrentSession();
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -41,7 +41,7 @@ public class UserDAOImpl implements UserDAO {
         logger.info("User saved successfully, User Details="+user);
     }
     @Override
-    @Transactional
+ //   @Transactional(readOnly = true)
     public User findByUsername(String username) {
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery("from User where username = :username");

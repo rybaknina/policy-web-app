@@ -26,7 +26,7 @@ public class TypeDAOImpl implements TypeDAO {
     }
 
     @Override
-    @Transactional
+//    @Transactional(readOnly = true)
     public Type getTypeById(String id) {
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Type where id = :id ");
@@ -36,7 +36,7 @@ public class TypeDAOImpl implements TypeDAO {
         return t;
     }
     @Override
-    @Transactional
+//    @Transactional(readOnly = true)
     public List<Type> getAllTypes() {
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Type");
@@ -48,7 +48,7 @@ public class TypeDAOImpl implements TypeDAO {
         return typeList;
     }
     @Override
-    @Transactional
+//    @Transactional(readOnly = true)
     public Map<String, String> getMapTypes(){
         Map<String, String> mapTypes = new HashMap<String, String>();
         Session session = this.sessionFactory.getCurrentSession();

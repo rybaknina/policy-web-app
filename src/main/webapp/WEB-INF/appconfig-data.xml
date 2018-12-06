@@ -22,12 +22,9 @@
     <!-- Configure the entity manager factory bean -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="annotatedClasses">
+        <property name="packagesToScan">
             <list>
-                <value>com.helmes.spring.model.Role</value>
-                <value>com.helmes.spring.model.User</value>
-                <value>com.helmes.spring.model.Policy</value>
-                <value>com.helmes.spring.model.Type</value>
+                <value>com.helmes.spring.model</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -67,7 +64,7 @@
     </bean>
 
     <!-- Enable annotation driven transaction management -->
-    <tx:annotation-driven/>
+    <tx:annotation-driven />
 
     <context:component-scan base-package="com.helmes.spring" />
 
