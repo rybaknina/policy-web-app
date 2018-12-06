@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Table(name="policy")
 public class Policy {
 
+    //TODO lets go to the real world - change all ids to UUID
     @Id
     @Column(name="id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
