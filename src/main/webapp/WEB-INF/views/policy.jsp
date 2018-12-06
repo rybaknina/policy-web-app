@@ -110,7 +110,7 @@
     </tr>
 	<tr>
 		<td>
-			<form:input path="pricef" />
+			<input type="text" name="pricef" />
 		</td>
 		<td>
             <form:select path="typef">

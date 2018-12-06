@@ -19,28 +19,28 @@ public class Policy {
     @NotNull(message = "Required field!")
     private BigDecimal price;
     @Column(name="is_active", nullable = true)
-//    @Convert(converter=BooleanToStringConverter.class)
+
     private Boolean active = true;
     @Column(name="id_type")
     @NotEmpty(message = "Required field!")
     private String type;
     @Transient
     private String typename;
-    @Transient
-    private BigDecimal pricef = new BigDecimal(0.00);
+   // @Transient
+   // private BigDecimal pricef = new BigDecimal(0.00);
     @Transient
     private String typef;
     @Transient
     private Boolean activef;
 
 
-    public BigDecimal getPricef() {
-        return pricef;
-    }
+   // public BigDecimal getPricef() {
+   //     return pricef;
+   // }
 
-    public void setPricef(BigDecimal pricef) {
-        this.pricef = pricef;
-    }
+   // public void setPricef(BigDecimal pricef) {
+   //     this.pricef = pricef;
+   // }
 
     public String getTypef() {
         return typef;

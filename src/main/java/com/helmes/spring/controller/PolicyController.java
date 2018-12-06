@@ -12,6 +12,7 @@ import com.helmes.spring.model.Policy;
 import com.helmes.spring.service.PolicyService;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -43,8 +44,13 @@ public class PolicyController {
         return "policy";
     }
     @RequestMapping(value = "/policy/find")
-    public String findPolicys(@ModelAttribute("policy") Policy p, Model model) {
-        List<Policy> list = policyService.findPolicys(p.getPricef(), p.getTypef(), p.getActivef());
+    public String findPolicys(@ModelAttribute("policy") Policy p, @RequestParam(value = "pricef", defaultValue = "0.0", required = false)  String priceStr, Model model) {
+        BigDecimal pricef = new BigDecimal(0.0);
+        try {
+            pricef = BigDecimal.valueOf(Double.parseDouble(priceStr));
+        } catch (Exception e) {
+        }
+        List<Policy> list = policyService.findPolicys(pricef, p.getTypef(), p.getActivef());
         model.addAttribute("policy", new Policy());
 
         fillPolicies(model, list);
