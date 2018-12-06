@@ -21,9 +21,9 @@ public class Policy {
     @Column(name="is_active", nullable = true)
 
     private Boolean active = true;
-    @Column(name="id_type")
+    @Column(name="id_type") //TODO change name to "type"
     @NotEmpty(message = "Required field!")
-    private String type;
+    private String type; //TODO supposed to be Type, not String
     @Transient
     private String typename;
    // @Transient
