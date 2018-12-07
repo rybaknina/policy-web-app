@@ -41,6 +41,7 @@ public class PolicyDAOImpl implements PolicyDAO {
     public void updatePolicy(Policy p) {
         Session session = this.sessionFactory.getCurrentSession();
         //TODO looks strange. If you need to update some data - you need to get updated entity, set new data in it, and .merge()
+
         Query query = session.createQuery("update Policy set price = :price, id_type = :type, is_active = :active where id = :id");
         query.setParameter("id", p.getId());
         query.setParameter("price", (BigDecimal) p.getPrice());

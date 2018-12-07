@@ -2,6 +2,8 @@ package com.helmes.spring.controller;
 
 import com.helmes.spring.service.TypeService;
 import com.helmes.spring.util.PaginationResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import java.util.Map;
 
 @Controller
 public class PolicyController {
+    private static final Logger logger = LoggerFactory.getLogger(PolicyController.class);
     private final int MAX_RESULT = 5;
     private final int MAX_NAVIGATION_PAGE = 10;
     @Autowired
@@ -35,6 +38,7 @@ public class PolicyController {
         try {
             page = Integer.parseInt(pageStr);
         } catch (Exception e) {
+            logger.info("ParseInt(page) had not been successfully, Policy Details="+pageStr);
         }
         PaginationResult<Policy> paginationResult //
                 = policyService.listPolicys(page, MAX_RESULT, MAX_NAVIGATION_PAGE);
@@ -49,6 +53,7 @@ public class PolicyController {
         try {
             pricef = BigDecimal.valueOf(Double.parseDouble(priceStr));
         } catch (Exception e) {
+            logger.info("BigDecimal.valueOf had not been successfully, Exception Details="+priceStr);
         }
         List<Policy> list = policyService.findPolicys(pricef, p.getTypef(), p.getActivef());
         model.addAttribute("policy", new Policy());
@@ -64,6 +69,7 @@ public class PolicyController {
             try {
                 page = Integer.parseInt(pageStr);
             } catch (Exception e) {
+                logger.info("ParseInt(page) had not been successfully, Exception Details="+pageStr);
             }
             PaginationResult<Policy> paginationResult //
                     = policyService.listPolicys(page, MAX_RESULT, MAX_NAVIGATION_PAGE);
@@ -96,6 +102,7 @@ public class PolicyController {
         try {
             page = Integer.parseInt(pageStr);
         } catch (Exception e) {
+            logger.info("ParseInt(page) had not been successfully, Exception Details="+pageStr);
         }
         PaginationResult<Policy> paginationResult //
                 = policyService.listPolicys(page, MAX_RESULT, MAX_NAVIGATION_PAGE);

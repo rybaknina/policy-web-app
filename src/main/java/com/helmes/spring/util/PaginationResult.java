@@ -3,12 +3,15 @@ package com.helmes.spring.util;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PaginationResult<E> {
+    private static final Logger logger = LoggerFactory.getLogger(PaginationResult.class);
     private int totalRecords;
     private int currentPage;
     private List<E> list;
@@ -65,7 +68,7 @@ public class PaginationResult<E> {
         if (maxNavigationPage < totalPages) {
             this.maxNavigationPage = maxNavigationPage;
         }
-
+        logger.info("Calculation had been successfully, totalPages ="+this.totalPages);
         this.calcNavigationPages();
     }
 
