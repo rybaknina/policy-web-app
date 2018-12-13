@@ -1,10 +1,14 @@
 package com.helmes.spring.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.helmes.spring.dao.PolicyDAO;
+import com.helmes.spring.dao.TypeDAO;
 import com.helmes.spring.model.Policy;
+import com.helmes.spring.model.Type;
 import com.helmes.spring.util.PaginationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +21,12 @@ public class PolicyServiceImpl implements PolicyService {
 
     public void setPolicyDAO(PolicyDAO policyDAO) {
         this.policyDAO = policyDAO;
+    }
+    @Autowired
+    private TypeDAO typeDAO;
+
+    public void setTypeDAO(TypeDAO typeDAO) {
+        this.typeDAO = typeDAO;
     }
 
     @Override
@@ -39,13 +49,19 @@ public class PolicyServiceImpl implements PolicyService {
 
     @Override
     @Transactional(readOnly = true)
-    public Policy getPolicyById(int id) {
+    public List<Policy> listPolicys() {
+        return this.policyDAO.listPolicys();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Policy getPolicyById(UUID id) {
         return this.policyDAO.getPolicyById(id);
     }
 
     @Override
     @Transactional
-    public void removePolicy(int id) {
+    public void removePolicy(UUID id) {
         this.policyDAO.removePolicy(id);
     }
     @Override

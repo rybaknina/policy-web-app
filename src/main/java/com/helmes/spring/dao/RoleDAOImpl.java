@@ -26,7 +26,7 @@ public class RoleDAOImpl implements RoleDAO {
 //    @Transactional(readOnly = true)
     public List<Role> findAll() {
         Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Role");
+        Query query = session.createQuery("from Role order by name");
         List<Role> roleList = query.list();
 
         for(Role r : roleList){

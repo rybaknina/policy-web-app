@@ -1,32 +1,52 @@
 package com.helmes.spring.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+
+
+import java.util.List;
+import java.util.UUID;
+
+import javax.persistence.*;
 
 @Entity
-@Table(name="policy_type")
+@Table(name="types")
 public class Type {
     @Id
-    @Column(name = "id")
-    private String id;
-    @Column(name = "type")
-    private String type;
+    @org.hibernate.annotations.Type(type="pg-uuid")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private UUID id;
 
-    public String getId() {
+    @Column(name = "name")
+    private String name;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "type")
+    private List<Policy> policies;
+
+    public List<Policy> getPolicies() {
+        return policies;
+    }
+
+    public void setPolicies(List<Policy> policies) {
+        this.policies = policies;
+    }
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 }

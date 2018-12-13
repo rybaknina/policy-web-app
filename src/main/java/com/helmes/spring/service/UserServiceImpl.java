@@ -2,7 +2,9 @@ package com.helmes.spring.service;
 
 import com.helmes.spring.dao.RoleDAO;
 import com.helmes.spring.dao.UserDAO;
+import com.helmes.spring.model.Role;
 import com.helmes.spring.model.User;
+import com.helmes.spring.model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,13 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new ArrayList<>(this.roleDAO.findAll()));
+        try{
+        user.setRole(this.roleDAO.findAll().get(1));} // криво
+        catch (Exception e){
+            Role role = new Role();
+            role.setName(UserRole.USER.name());  // криво. Как лучше работать с ролями?
+            user.setRole(role);
+        }
         this.userDAO.save(user);
     }
 

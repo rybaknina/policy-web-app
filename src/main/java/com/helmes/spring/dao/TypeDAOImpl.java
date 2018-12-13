@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Repository
 public class TypeDAOImpl implements TypeDAO {
@@ -27,7 +28,7 @@ public class TypeDAOImpl implements TypeDAO {
 
     @Override
 //    @Transactional(readOnly = true)
-    public Type getTypeById(String id) {
+    public Type getTypeById(UUID id) {
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Type where id = :id ");
         query.setParameter("id", id);
@@ -35,6 +36,17 @@ public class TypeDAOImpl implements TypeDAO {
         logger.info("Type loaded successfully, Type details="+t);
         return t;
     }
+
+    @Override
+    public Type getTypeByName(String typename) {
+        Session session = this.sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Type where type = :typename ");
+        query.setParameter("typename", typename);
+        Type t = (Type) query.uniqueResult();
+        logger.info("Type loaded successfully, Type details="+t);
+        return t;
+    }
+
     @Override
 //    @Transactional(readOnly = true)
     public List<Type> getAllTypes() {
@@ -47,9 +59,9 @@ public class TypeDAOImpl implements TypeDAO {
         }
         return typeList;
     }
-    @Override
+ //   @Override
 //    @Transactional(readOnly = true)
-    public Map<String, String> getMapTypes(){
+/*    public Map<String, String> getMapTypes(){
         Map<String, String> mapTypes = new HashMap<String, String>();
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Type");
@@ -59,6 +71,6 @@ public class TypeDAOImpl implements TypeDAO {
             mapTypes.put(t.getId(), t.getType());
         }
         return mapTypes;
-    }
+    }*/
 
 }

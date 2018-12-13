@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class TypeServiceImpl implements TypeService {
@@ -25,12 +26,12 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     @Transactional(readOnly = true)
-    public Type getTypeById(String id) {
+    public Type getTypeById(UUID id) {
         return this.typeDAO.getTypeById(id);
     }
-    @Override
-    @Transactional(readOnly = true)
-    public Map<String, String> getMapTypes() {
-        return this.typeDAO.getMapTypes();
-    }
+ //   @Override
+ //   @Transactional(readOnly = true)
+ //   public Map<String, String> getMapTypes() {
+ //       return this.typeDAO.getMapTypes();
+ //   }
 }

@@ -40,7 +40,7 @@
 			</form:label>
 		</td>
 		<td>
-			<form:input path="id" readonly="true" size="8"  disabled="true" />
+			<form:input path="id" readonly="true" size="40"  disabled="true" />
 			<form:hidden path="id" />
 		</td> 
 	</tr>
@@ -61,17 +61,17 @@
 	</tr>
 	<tr>
 		<td>
-			<form:label path="type">
+			<form:label path="type.id">
 				<spring:message text="Type"/>
 			</form:label>
 		</td>
 		<td>
-            <form:select path="type">
+            <form:select path="type.id">
                 <form:option value="" label="" />
-                <form:options items="${typeList}" itemValue="id" itemLabel="type" />
+                <form:options items="${typeList}" itemValue="id" itemLabel="name" />
             </form:select>
             <span>
-                <form:errors path="type" cssClass="error" />
+                <form:errors path="type.id" cssClass="error" />
             </span>
          </td>
 	</tr>
@@ -87,11 +87,11 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<c:if test="${!empty policy.type}">
+			<c:if test="${!empty policy.price}">
 				<input type="submit"
 					value="<spring:message text="Edit Policy"/>" />
 			</c:if>
-			<c:if test="${empty policy.type}">
+			<c:if test="${empty policy.price}">
 				<input type="submit"
 					value="<spring:message text="Add Policy"/>" />
 			</c:if>
@@ -115,7 +115,7 @@
 		<td>
             <form:select path="typef">
                 <form:option value="" label="" />
-                <form:options items="${typeList}" itemValue="id" itemLabel="type" />
+                <form:options items="${typeList}" itemValue="id" itemLabel="name" />
             </form:select>
          </td>
         <td>
@@ -123,7 +123,7 @@
           <td>
 		<td colspan="2">
             <input type="submit"
-                value="<spring:message text="Find Policy"/>" />
+                value="<spring:message text="Find Policy"/>" disabled="true" />
 		</td>
 	</tr>
 </table>
@@ -133,7 +133,7 @@
 <c:if test="${!empty listPolicys}">
 	<table class="tg">
 	<tr>
-		<th width="80">Policy ID</th>
+		<th width="120">Policy ID</th>
 		<th width="120">Policy Price</th>
 		<th width="120">Policy Type</th>
         <th width="120">Policy Active</th>
@@ -144,7 +144,7 @@
 		<tr>
 			<td>${policy.id}</td>
 			<td>${policy.price}</td>
-			<td>${policy.typename}</td>
+			<td>${policy.type.name}</td>
             <td>${policy.active}</td>
 			<td><a href="<c:url value='/edit/${policy.id}' />" >Edit</a></td>
 			<td><a href="<c:url value='/remove/${policy.id}' />" >Delete</a></td>

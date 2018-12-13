@@ -4,10 +4,11 @@ import com.helmes.spring.model.Type;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public interface TypeService {
 
-    public List<Type> getAllTypes();
-    public Type getTypeById(String id);
-    public Map<String, String> getMapTypes();
+    List<Type> getAllTypes();
+    Type getTypeById(UUID id);
+  //  public Map<String, String> getMapTypes();
 }

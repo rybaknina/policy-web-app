@@ -48,6 +48,7 @@
     </bean>
     <bean id="policyService" class="com.helmes.spring.service.PolicyServiceImpl">
         <property name="policyDAO" ref="policyDAO" />
+        <property name="typeDAO" ref="typeDAO" />
     </bean>
     <bean id="typeService" class="com.helmes.spring.service.TypeServiceImpl">
         <property name="typeDAO" ref="typeDAO" />

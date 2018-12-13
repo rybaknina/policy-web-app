@@ -1,5 +1,6 @@
 package com.helmes.spring.controller;
 
+import com.helmes.spring.model.Type;
 import com.helmes.spring.service.TypeService;
 import com.helmes.spring.util.PaginationResult;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 @Controller
@@ -31,19 +33,10 @@ public class PolicyController {
     private TypeService typeService;
 
 
-    @RequestMapping(value = "/policys", method = RequestMethod.GET)
+    @RequestMapping(value = {"/","/policys"}, method = RequestMethod.GET)
     public String listPolicys(@RequestParam(value = "page", defaultValue = "1" , required = false) String pageStr,Model model) {
         model.addAttribute("policy", new Policy());
-        int page = 1;
-        try {
-            page = Integer.parseInt(pageStr);
-        } catch (Exception e) {
-            logger.info("ParseInt(page) had not been successfully, Policy Details="+pageStr);
-        }
-        PaginationResult<Policy> paginationResult //
-                = policyService.listPolicys(page, MAX_RESULT, MAX_NAVIGATION_PAGE);
-        model.addAttribute("paginationResult", paginationResult);
-        fillPolicies(model, paginationResult.getList());
+        fillPolicies(model, pageStr);
         //    List<Policy> list = this.policyService.listPolicys(page, MAX_RESULT, MAX_NAVIGATION_PAGE);
         return "policy";
     }
@@ -58,26 +51,17 @@ public class PolicyController {
         List<Policy> list = policyService.findPolicys(pricef, p.getTypef(), p.getActivef());
         model.addAttribute("policy", new Policy());
 
-        fillPolicies(model, list);
+       // fillPolicies(model, priceStr);
         return "policy";
     }
     //For add and update policy both
     @RequestMapping(value= "/policy/add", method = RequestMethod.POST)
     public String addPolicy(@ModelAttribute("policy") @Valid Policy p, BindingResult result,@RequestParam(value = "page", defaultValue = "1", required = false)  String pageStr, Model model){
         if (result.hasErrors()) {
-            int page = 1;
-            try {
-                page = Integer.parseInt(pageStr);
-            } catch (Exception e) {
-                logger.info("ParseInt(page) had not been successfully, Exception Details="+pageStr);
-            }
-            PaginationResult<Policy> paginationResult //
-                    = policyService.listPolicys(page, MAX_RESULT, MAX_NAVIGATION_PAGE);
-            model.addAttribute("paginationResult", paginationResult);
-            fillPolicies(model, paginationResult.getList());
+            fillPolicies(model, pageStr);
             return "policy";
         }
-        if(p.getId() == 0){
+        if(p.getId()==null){
             //new policy, add it
             policyService.addPolicy(p);
         }else{
@@ -88,16 +72,21 @@ public class PolicyController {
     }
 
     @RequestMapping("/remove/{id}")
-    public String removePolicy(@PathVariable("id") int id){
+    public String removePolicy(@PathVariable("id") UUID id){
 
         policyService.removePolicy(id);
         return "redirect:/policys";
     }
 
     @RequestMapping("/edit/{id}")
-    public String editPolicy(@PathVariable("id") int id,@RequestParam(value = "page", defaultValue = "1", required = false)  String pageStr, Model model){
+    public String editPolicy(@PathVariable("id") UUID id,@RequestParam(value = "page", defaultValue = "1", required = false)  String pageStr, Model model){
         Policy p = policyService.getPolicyById(id);
         model.addAttribute("policy", p);
+        fillPolicies(model, pageStr);
+        return "policy";
+    }
+
+    private void fillPolicies(Model model, String pageStr){
         int page = 1;
         try {
             page = Integer.parseInt(pageStr);
@@ -107,27 +96,8 @@ public class PolicyController {
         PaginationResult<Policy> paginationResult //
                 = policyService.listPolicys(page, MAX_RESULT, MAX_NAVIGATION_PAGE);
         model.addAttribute("paginationResult", paginationResult);
-        fillPolicies(model, paginationResult.getList());
-        return "policy";
-    }
 
-    private void fillPolicies(Model model, List<Policy> list){
-   //     List<Policy> list = this.policyService.listPolicys();
-    //    List<Policy> list = this.policyService.findPolicys(p.getPricef(), p.getTypef(), p.getActivef());
-   /*     int startpage = (int) (page - 5 > 0?page - 5:1);
-        int endpage = startpage + 10;
-        model.addAttribute("startpage",startpage);
-        model.addAttribute("endpage",endpage);*/
-        Map<String, String> mapTypeNames = typeService.getMapTypes();
-        for(Policy policy: list){
-            String type = policy.getType();
-            if (!type.trim().isEmpty()){
-                policy.setTypename(mapTypeNames.get(type));
-                model.addAttribute("typename", policy.getTypename());}
-            else model.addAttribute("typename","");
-        }
-
-        model.addAttribute("listPolicys", list);
+        model.addAttribute("listPolicys", paginationResult.getList());
         model.addAttribute("typeList", typeService.getAllTypes());
     }
 

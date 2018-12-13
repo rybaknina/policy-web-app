@@ -1,16 +1,24 @@
 package com.helmes.spring.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
+import org.hibernate.annotations.Type;
 @Entity
 @Table(name="users")
 public class User {
 
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    @Type(type="pg-uuid")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private UUID id;
     private String username;
     private String password;
     @Column(name="is_active")
@@ -29,25 +37,23 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_role", referencedColumnName = "id" )
+    private Role role;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "role_id") })
-    private List<Role> roles;
-
-    public List<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
-    public int getId() {
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -95,7 +101,7 @@ public class User {
                 ", active=" + active +
                 ", delete=" + delete +
                 ", passwordConfirm='" + passwordConfirm + '\'' +
-                ", roles=" + roles +
+                ", role" + role +
                 '}';
     }
 }

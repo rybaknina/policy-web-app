@@ -5,30 +5,44 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-
+import java.util.List;
+import java.util.UUID;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name="policy")
 public class Policy {
 
-    //TODO lets go to the real world - change all ids to UUID
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    @Type(type="pg-uuid")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private UUID id;
 
     @Column(name="price")
     @NotNull(message = "Required field!")
     private BigDecimal price;
     @Column(name="is_active", nullable = true)
-
     private Boolean active = true;
-    @Column(name="id_type") //TODO change name to "type"
-    @NotEmpty(message = "Required field!")
-    private String type; //TODO supposed to be Type, not String
-    @Transient
-    private String typename;
-   // @Transient
-   // private BigDecimal pricef = new BigDecimal(0.00);
+
+    public Boolean getDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
+    }
+
+    @Column(name="is_delete", nullable = true)
+    private Boolean isDelete = false;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_type", referencedColumnName = "id" )
+    private com.helmes.spring.model.Type type;
+
     @Transient
     private String typef;
     @Transient
@@ -59,15 +73,13 @@ public class Policy {
         this.activef = activef;
     }
 
-    public String getTypename() {
-        return typename;
+    public com.helmes.spring.model.Type getType() {
+        return type;
     }
 
-    public void setTypename(String typename) {
-        this.typename = typename;
+    public void setType(com.helmes.spring.model.Type type) {
+        this.type = type;
     }
-
-
 
     public Boolean getActive() {
         return active;
@@ -76,19 +88,13 @@ public class Policy {
     public void setActive(Boolean active) {
         this.active = active;
     }
-    public String getType() {
-        return type;
-    }
 
-    public void setType(String type) {
-        this.type = type;
-    }
 
-    public int getId() {
+    public UUID  getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -106,8 +112,10 @@ public class Policy {
                 "id=" + id +
                 ", price=" + price +
                 ", active=" + active +
-                ", type='" + type + '\'' +
-                ", typename='" + typename + '\'' +
+                ", isDelete=" + isDelete +
+                ", type=" + type +
+                ", typef='" + typef + '\'' +
+                ", activef=" + activef +
                 '}';
     }
 }
