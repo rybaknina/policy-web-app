@@ -22,9 +22,9 @@ public class PolicyDAOImpl implements PolicyDAO {
     private static final int limitResultsPerPage = 5;
     @Autowired
     private SessionFactory sessionFactory;
-    private String sqllist = "from Policy where isDelete =false or isDelete is null";
-    private String sqllistjoin = "select p from Policy p where p.isDelete =false or p.isDelete is null";
-    private String sqlfindlist = "from Policy where (isDelete =false or isDelete is null) and price >= :pricef and type = :typef and active = :activef";
+    private static final String SQL_GET_ALL = "from Policy where is_delete =false or is_delete is null";
+    private static final String SQL_RMV = "update Policy set is_delete = true, is_active = false where id = :id ";
+    private static final String SQL_FIND = "from Policy where (is_delete =false or is_delete is null) and price >= :pricef and type = :typef and active = :activef";
     public void setSessionFactory(SessionFactory sf){
         this.sessionFactory = sf;
     }
@@ -40,7 +40,6 @@ public class PolicyDAOImpl implements PolicyDAO {
     @Override
     public void updatePolicy(Policy p) {
         Session session = this.sessionFactory.getCurrentSession();
-        //TODO looks strange. If you need to update some data - you need to get updated entity, set new data in it, and .merge()
         session.update(p);  // можно просто так, без HQL и не merge()?
         logger.info("Policy updated successfully, Policy Details="+p);
     }
@@ -49,7 +48,7 @@ public class PolicyDAOImpl implements PolicyDAO {
     public List<Policy> listPolicys() {
         Session session = this.sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery(sqllistjoin);
+        Query query = session.createQuery(SQL_GET_ALL);
         return query.list();
     }
 
@@ -58,7 +57,7 @@ public class PolicyDAOImpl implements PolicyDAO {
     public PaginationResult<Policy> listPolicys(int page, int maxResult, int maxNavigationPage) {
         Session session = this.sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery(sqllist);
+        Query query = session.createQuery(SQL_GET_ALL);
 
         return new PaginationResult<Policy>(query, page, maxResult, maxNavigationPage);
     }
@@ -77,7 +76,7 @@ public class PolicyDAOImpl implements PolicyDAO {
     @Override
     public void removePolicy(UUID id) {
         Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery("update Policy set is_delete = true, is_active = false where id = :id ");
+        Query query = session.createQuery(SQL_RMV);
         query.setParameter("id", id);
         int result = query.executeUpdate();
         logger.info("Policy deleted successfully, policy details="+id);
@@ -86,7 +85,7 @@ public class PolicyDAOImpl implements PolicyDAO {
     @Override
     public List<Policy> findPolicys(BigDecimal pricef, String typef, Boolean activef) {
         Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery(sqlfindlist);
+        Query query = session.createQuery(SQL_FIND);
 
         query.setParameter("pricef", pricef);
         query.setParameter("typef", typef);

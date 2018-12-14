@@ -23,23 +23,22 @@ public class Policy {
     private UUID id;
 
     @Column(name="price")
-    @NotNull(message = "Required field!")
+   // @NotNull(message = "Required field!")
     private BigDecimal price;
     @Column(name="is_active", nullable = true)
     private Boolean active = true;
+    @Column(name="is_delete", nullable = true)
+    private Boolean delete = false;
 
     public Boolean getDelete() {
-        return isDelete;
+        return delete;
     }
 
     public void setDelete(Boolean delete) {
-        isDelete = delete;
+        this.delete = delete;
     }
 
-    @Column(name="is_delete", nullable = true)
-    private Boolean isDelete = false;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)  // тут надо подтягивать на лист тип сразу, поэтому не дружит с LAZY
     @JoinColumn(name = "id_type", referencedColumnName = "id" )
     private com.helmes.spring.model.Type type;
 
@@ -112,7 +111,7 @@ public class Policy {
                 "id=" + id +
                 ", price=" + price +
                 ", active=" + active +
-                ", isDelete=" + isDelete +
+                ", delete=" + delete +
                 ", type=" + type +
                 ", typef='" + typef + '\'' +
                 ", activef=" + activef +

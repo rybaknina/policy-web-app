@@ -37,7 +37,7 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_role", referencedColumnName = "id" )
     private Role role;
 

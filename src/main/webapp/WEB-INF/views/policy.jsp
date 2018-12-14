@@ -87,11 +87,11 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<c:if test="${!empty policy.price}">
+			<c:if test="${!empty policy.id}">
 				<input type="submit"
 					value="<spring:message text="Edit Policy"/>" />
 			</c:if>
-			<c:if test="${empty policy.price}">
+			<c:if test="${empty policy.id}">
 				<input type="submit"
 					value="<spring:message text="Add Policy"/>" />
 			</c:if>
