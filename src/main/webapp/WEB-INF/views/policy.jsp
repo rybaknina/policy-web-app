@@ -2,17 +2,23 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page session="false" %>
+
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
+<script src="${contextPath}/resources/js/react.min.js"></script>
+<script src="${contextPath}/resources/js/react-dom.min.js"></script>
+<script src="${contextPath}/resources/js/browser.min.js"></script>
+
 <html>
 <head>
 	<title>Policy Page</title>
 
 	<style type="text/css">
-		.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
-		.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;}
-		.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
-		.tg .tg-4eph{background-color:#f9f9f9}
-		.error {
-            	color: red;
+		.policys-table  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
+		.policys-table td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;}
+		.policys-table th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
+		.policys-table .tg-4eph{background-color:#f9f9f9}
+		.error {color: red;}
 	</style>
 </head>
 <body>
@@ -30,7 +36,7 @@
 </table>
 <c:url var="addAction" value="/policy/add" ></c:url>
 
-<form:form action="${addAction}" commandName="policy">
+<form:form action="${addAction}" commandName="policy" id="root">
 <table>
 	<c:if test="${!empty policy.id}">
 	<tr>
@@ -52,7 +58,7 @@
 			</form:label>
 		</td>
 		<td>
-			<form:input path="price" />
+			<form:input path="price"/>
 			<span>
 			    <form:errors path="price" cssClass="error" />
 			</span>
@@ -131,7 +137,7 @@
 <br>
 <h3>Policys List</h3>
 <c:if test="${!empty listPolicys}">
-	<table class="tg">
+	<table class="policys-table">
 	<tr>
 		<th width="120">Policy ID</th>
 		<th width="120">Policy Price</th>
@@ -167,5 +173,19 @@
 
        </div>
    </c:if>
+
+	<div id=”reactExample”></div>
+	<script type="text/babel">
+		var HelloWorldBox = React.createClass({
+			render: function() {
+				return (
+					<div>
+						<h1>Hello world!</h1>
+					</div>
+				);
+			}
+		});
+		ReactDOM.render(<HelloWorldBox />, document.getElementById('root'));
+	</script>
 </body>
 </html>

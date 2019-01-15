@@ -22,7 +22,7 @@ import java.util.UUID;
 @ContextConfiguration(locations = "classpath:appconfig-root-test.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PolicyDAOTest {
-    @Autowired PolicyDAOImpl policyDAO;
+    @Autowired PolicyDAO policyDAO;
     @Autowired SessionFactory sessionFactory;
 
     @Test
