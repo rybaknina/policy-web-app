@@ -29,7 +29,6 @@
         </property>
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.hbm2ddl.auto">create</prop>
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
             </props>
@@ -47,18 +46,30 @@
     <bean id="roleDAO" class="com.helmes.spring.dao.RoleDAOImpl">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+    <bean id="companyDAO" class="com.helmes.spring.dao.CompanyDAOImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
     <bean id="policyService" class="com.helmes.spring.service.PolicyServiceImpl">
         <property name="policyDAO" ref="policyDAO" />
         <property name="typeDAO" ref="typeDAO" />
+        <property name="companyDAO" ref="companyDAO" />
     </bean>
     <bean id="typeService" class="com.helmes.spring.service.TypeServiceImpl">
         <property name="typeDAO" ref="typeDAO" />
+    </bean>
+    <bean id="companyService" class="com.helmes.spring.service.CompanyServiceImpl">
+        <property name="companyDAO" ref="companyDAO" />
     </bean>
     <bean id="userService" class="com.helmes.spring.service.UserServiceImpl">
         <property name="userDAO" ref="userDAO" />
         <property name="roleDAO" ref="roleDAO" />
     </bean>
-
+    <bean id="buyDAO" class="com.helmes.spring.dao.BuyDAOImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="buyService" class="com.helmes.spring.service.BuyServiceImpl">
+        <property name="buyDAO" ref="buyDAO" />
+    </bean>
     <!-- Configure the transaction manager bean -->
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate4.HibernateTransactionManager">
