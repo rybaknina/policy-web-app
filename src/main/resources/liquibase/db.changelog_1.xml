@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- первый сет, который модифицировал существующую таблицу-->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uid.uuid_generate_v4()" dbms="postgresql"/>
+    <changeSet author="nin" id="modifyDataType-company">
+        <modifyDataType columnName="company"
+                        newDataType="${uuid_type}"
+                        schemaName="public"
+                        tableName="policy"/>
+    </changeSet>
+
+</databaseChangeLog>

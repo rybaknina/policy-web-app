@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- это тест создания таблицы, не актуальный -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uid.uuid_generate_v4()" dbms="postgresql"/>
+
+    <changeSet author="nin" id="policy-table">
+        <createTable tableName="policy">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="id_type" type="${uuid_type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_company" type="${uuid_type}" >
+                <constraints nullable="true"/>
+            </column>
+            <column name="car_type" type="${uuid_type}" >
+                <constraints nullable="true"/>
+            </column>
+            <column name="id_period" type="${uuid_type}" >
+                <constraints nullable="true"/>
+            </column>
+            <column name="price" type="decimal(17,2)"  defaultValueNumeric="0.0"/>
+            <column name="stock" type="${uuid_type}" >
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_active" type="boolean" defaultValueBoolean="true"/>
+            <column name="is_delete" type="boolean" defaultValueBoolean="false"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="nin" id="policy-table-foreign-key-constraint">
+        <addForeignKeyConstraint
+                baseTableName="policy"
+                baseColumnNames="id_type"
+                referencedTableName="types"
+                referencedColumnNames="id"
+                constraintName="fk_policy_types"
+                onDelete="SET NULL"
+                onUpdate="SET NULL"/>
+    </changeSet>
+</databaseChangeLog>

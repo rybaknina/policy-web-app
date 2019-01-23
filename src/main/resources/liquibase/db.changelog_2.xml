@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- изменения полей вместе с созданием новой таблицы для покупки страховки -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+    <changeSet author="nin" id="addColumn-ccy">
+        <addColumn schemaName="public"
+                   tableName="policy">
+            <column name="id_ccy" type="${uuid_type}"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="nin" id="renameColumn-company">
+        <renameColumn columnDataType="${uuid_type}"
+                      newColumnName="id_company"
+                      oldColumnName="company"
+                      schemaName="public"
+                      tableName="policy"/>
+    </changeSet>
+    <changeSet author="nin" id="dropNotNullConstraint-company">
+        <dropNotNullConstraint columnDataType="${uuid_type}"
+                               columnName="id_company"
+                               schemaName="public"
+                               tableName="policy"/>
+    </changeSet>
+    <changeSet author="nin" id="modifyDataType-car_type">
+        <modifyDataType columnName="car_type"
+                        newDataType="${uuid_type}"
+                        schemaName="public"
+                        tableName="policy"/>
+    </changeSet>
+    <changeSet author="nin" id="modifyDataType-period">
+        <modifyDataType columnName="id_period"
+                        newDataType="${uuid_type}"
+                        schemaName="public"
+                        tableName="policy"/>
+    </changeSet>
+    <changeSet author="nin" id="dropColumn-id_stock">
+        <dropColumn columnName="id_stock"
+                    schemaName="public"
+                    tableName="policy"/>
+    </changeSet>
+    <changeSet author="nin" id="addColumn-id_stock">
+        <addColumn schemaName="public"
+                   tableName="policy">
+            <column name="id_stock" type="${uuid_type}"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="nin" id="company-table">
+        <createTable tableName="company">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="nin" id="ccy-table">
+        <createTable tableName="currency">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ccy" type="varchar(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)" />
+            <column name="rate" type="decimal(12,9)"  defaultValueNumeric="0.0"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="nin" id="policy-table-foreign-key-constraint_company">
+        <addForeignKeyConstraint
+                baseTableName="policy"
+                baseColumnNames="id_company"
+                referencedTableName="company"
+                referencedColumnNames="id"
+                constraintName="fk_policy_company"
+                onDelete="SET NULL"
+                onUpdate="SET NULL"/>
+    </changeSet>
+    <changeSet author="nin" id="policy-table-foreign-key-constraint_currency">
+        <addForeignKeyConstraint
+                baseTableName="policy"
+                baseColumnNames="id_ccy"
+                referencedTableName="currency"
+                referencedColumnNames="id"
+                constraintName="fk_policy_currency"
+                onDelete="SET NULL"
+                onUpdate="SET NULL"/>
+    </changeSet>
+    <changeSet author="nin" id="buy-table">
+        <createTable tableName="buy">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="id_policy" type="${uuid_type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_user" type="${uuid_type}">
+                <constraints nullable="true"/>
+            </column>
+            <column name="lastname" type="varchar(50)" />
+            <column name="firstname" type="varchar(50)" />
+            <column name="email" type="varchar(50)" />
+            <column name="phone" type="varchar(20)" />
+            <column name="is_wear" type="boolean" defaultValueBoolean="false"/>
+            <column name="is_register_by" type="boolean" defaultValueBoolean="true"/>
+            <column name="is_expierence" type="boolean" defaultValueBoolean="false"/>
+            <column name="amount" type="decimal(17,2)"  defaultValueNumeric="0.0"/>
+            <column name="id_paycard" type="${uuid_type}">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_active" type="boolean" defaultValueBoolean="true"/>
+            <column name="is_delete" type="boolean" defaultValueBoolean="false"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="nin" id="buy-table-foreign-key-constraint_user">
+        <addForeignKeyConstraint
+                baseTableName="buy"
+                baseColumnNames="id_user"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_buy_users"
+                onDelete="SET NULL"
+                onUpdate="SET NULL"/>
+    </changeSet>
+    <changeSet author="nin" id="buy-table-foreign-key-constraint_policy">
+        <addForeignKeyConstraint
+                baseTableName="buy"
+                baseColumnNames="id_policy"
+                referencedTableName="policy"
+                referencedColumnNames="id"
+                constraintName="fk_buy_policy"
+                onDelete="SET NULL"
+                onUpdate="SET NULL"/>
+    </changeSet>
+    <changeSet author="nin" id="paycard-table">
+        <createTable tableName="paycard">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="id_user" type="${uuid_type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="card_num" type="varchar(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="balance" type="decimal(17,2)"  defaultValueNumeric="0.0"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="nin" id="paycard-table-foreign-key-constraint_user">
+        <addForeignKeyConstraint
+                baseTableName="paycard"
+                baseColumnNames="id_user"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_paycard_users"
+                onDelete="SET NULL"
+                onUpdate="SET NULL"/>
+    </changeSet>
+</databaseChangeLog>

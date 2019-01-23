@@ -48,6 +48,7 @@ public class TypeDAOImpl implements TypeDAO {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
 //    @Transactional(readOnly = true)
     public List<Type> getAllTypes() {
         Session session = this.sessionFactory.getCurrentSession();

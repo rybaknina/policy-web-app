@@ -22,6 +22,7 @@ public class RoleDAOImpl implements RoleDAO {
         this.sessionFactory = sf;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
 //    @Transactional(readOnly = true)
     public List<Role> findAll() {

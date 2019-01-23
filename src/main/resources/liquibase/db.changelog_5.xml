@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- изменения полей вместе с созданием новой таблицы для покупки страховки -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+
+    <changeSet author="liquibase-docs" id="insert-company">
+        <insert schemaName="public"
+                tableName="company">
+            <column name="name" type="varchar(255)" value="Belarus"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="liquibase-docs" id="insert-company2">
+        <insert schemaName="public"
+                tableName="company">
+            <column name="name" type="varchar(255)" value="USA"/>
+        </insert>
+    </changeSet>
+    <changeSet author="liquibase-docs" id="insert-company3">
+        <insert schemaName="public"
+                tableName="company">
+            <column name="name" type="varchar(255)" value="Poland"/>
+        </insert>
+    </changeSet>
+    <changeSet author="liquibase-docs" id="insert-company4">
+        <insert schemaName="public"
+                tableName="company">
+            <column name="name" type="varchar(255)" value="Russia"/>
+        </insert>
+    </changeSet>
+    <changeSet author="liquibase-docs" id="insert-company5">
+        <insert schemaName="public"
+                tableName="company">
+            <column name="name" type="varchar(255)" value="Estonia"/>
+        </insert>
+    </changeSet>
+    <changeSet author="liquibase-docs" id="insert-company6">
+        <insert schemaName="public"
+                tableName="company">
+            <column name="name" type="varchar(255)" value="Australia"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

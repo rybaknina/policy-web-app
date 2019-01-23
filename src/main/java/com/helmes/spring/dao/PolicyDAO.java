@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.helmes.spring.model.Policy;
+import com.helmes.spring.model.Type;
 import com.helmes.spring.util.PaginationResult;
 
 public interface PolicyDAO {
@@ -15,6 +16,6 @@ public interface PolicyDAO {
     PaginationResult<Policy> listPolicys(int page, int maxResult, int maxNavigationPage);
     Policy getPolicyById(UUID id);
     void removePolicy(UUID id);
-    List<Policy> findPolicys(BigDecimal pricef, String typef, Boolean activef);
+    List<Policy> findPolicys(int page, int maxResult, int maxNavigationPage, BigDecimal priceFrom, BigDecimal priceTo, Type typef, Boolean activef);
 
 }

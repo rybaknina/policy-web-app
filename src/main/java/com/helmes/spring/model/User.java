@@ -21,6 +21,10 @@ public class User {
     private UUID id;
     private String username;
     private String password;
+    private String email;
+    private String firstname;
+    private String lastname;
+    private String phone;
     @Column(name="is_active")
     private Boolean active = true;
     @Column(name="is_delete")
@@ -40,6 +44,17 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_role", referencedColumnName = "id" )
     private Role role;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "user")
+    private List<Buy> buys;
+
+    public List<Buy> getBuys() {
+        return buys;
+    }
+
+    public void setBuys(List<Buy> buys) {
+        this.buys = buys;
+    }
 
     public Role getRole() {
         return role;
@@ -90,6 +105,38 @@ public class User {
 
     public void setDelete(Boolean delete) {
         this.delete = delete;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override

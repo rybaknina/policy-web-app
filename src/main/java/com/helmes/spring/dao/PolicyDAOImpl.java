@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.helmes.spring.model.Policy;
+import com.helmes.spring.model.Type;
 import com.helmes.spring.util.PaginationResult;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -24,7 +25,8 @@ public class PolicyDAOImpl implements PolicyDAO {
     private SessionFactory sessionFactory;
     private static final String SQL_GET_ALL = "from Policy where is_delete =false or is_delete is null";
     private static final String SQL_RMV = "update Policy set is_delete = true, is_active = false where id = :id ";
-    private static final String SQL_FIND = "from Policy where (is_delete =false or is_delete is null) and price >= :pricef and type = :typef and active = :activef";
+    private static final String SQL_FIND = "from Policy where price >= :priceFrom and price <= :priceTo and type = :typef and is_active = :activef";
+    private static final String SQL_FIND_NULL = "from Policy where price >= :priceFrom and price <= :priceTo and is_active = :activef";
     public void setSessionFactory(SessionFactory sf){
         this.sessionFactory = sf;
     }
@@ -32,8 +34,8 @@ public class PolicyDAOImpl implements PolicyDAO {
     @Override
     public void addPolicy(Policy p) {
         Session session = this.sessionFactory.getCurrentSession();
-
-        session.persist(p);
+        session.merge(p);
+       // session.persist(p);
         logger.info("Policy saved successfully, Policy Details="+p);
     }
 
@@ -43,7 +45,7 @@ public class PolicyDAOImpl implements PolicyDAO {
         session.update(p);  // можно просто так, без HQL и не merge()?
         logger.info("Policy updated successfully, Policy Details="+p);
     }
-
+    @SuppressWarnings("unchecked")
     @Override
     public List<Policy> listPolicys() {
         Session session = this.sessionFactory.getCurrentSession();
@@ -81,14 +83,20 @@ public class PolicyDAOImpl implements PolicyDAO {
         int result = query.executeUpdate();
         logger.info("Policy deleted successfully, policy details="+id);
     }
-
+    @SuppressWarnings("unchecked")
     @Override
-    public List<Policy> findPolicys(BigDecimal pricef, String typef, Boolean activef) {
+    public List<Policy> findPolicys(int page, int maxResult, int maxNavigationPage, BigDecimal priceFrom, BigDecimal priceTo, Type typef, Boolean activef) {
         Session session = this.sessionFactory.getCurrentSession();
-        Query query = session.createQuery(SQL_FIND);
-
-        query.setParameter("pricef", pricef);
-        query.setParameter("typef", typef);
+        Query query = null;
+        if (typef == null){
+            query = session.createQuery(SQL_FIND_NULL);
+        }
+        else{
+            query = session.createQuery(SQL_FIND);
+            query.setParameter("typef", typef);
+        }
+        query.setParameter("priceFrom", priceFrom);
+        query.setParameter("priceTo", priceTo);
         query.setParameter("activef", activef);
 
         List<Policy> policysList = query.list();

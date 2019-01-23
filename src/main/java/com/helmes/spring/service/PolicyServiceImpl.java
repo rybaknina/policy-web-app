@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.helmes.spring.dao.CompanyDAO;
 import com.helmes.spring.dao.PolicyDAO;
 import com.helmes.spring.dao.TypeDAO;
 import com.helmes.spring.model.Policy;
@@ -27,6 +28,12 @@ public class PolicyServiceImpl implements PolicyService {
 
     public void setTypeDAO(TypeDAO typeDAO) {
         this.typeDAO = typeDAO;
+    }
+    @Autowired
+    private CompanyDAO companyDAO;
+
+    public void setCompanyDAO(CompanyDAO companyDAO) {
+        this.companyDAO = companyDAO;
     }
 
     @Override
@@ -66,8 +73,8 @@ public class PolicyServiceImpl implements PolicyService {
     }
     @Override
     @Transactional(readOnly = true)
-    public List<Policy> findPolicys(BigDecimal pricef, String typef, Boolean activef) {
-        return this.policyDAO.findPolicys(pricef, typef, activef);
+    public List<Policy> findPolicys(int page, int maxResult, int maxNavigationPage, BigDecimal priceFrom, BigDecimal priceTo, Type typef, Boolean activef) {
+        return this.policyDAO.findPolicys(page, maxResult, maxNavigationPage, priceFrom, priceTo, typef, activef);
     }
 
 }
