@@ -1,18 +1,19 @@
 --liquibase formatted sql
---changeset codecentric-docs:release_1.create_tables.sql
+--changeset codecentric-docs:create_tables.sql
 -- это первый sql базы
  --DROP DATABASE testdb;
 
-CREATE DATABASE testdb
+/*CREATE DATABASE testdb
 WITH
 OWNER = postgres
 ENCODING = 'UTF8'
 TABLESPACE = pg_default
-CONNECTION LIMIT = -1;
+CONNECTION LIMIT = -1;*/
 
 DROP TABLE public.policy_type;
 -- Table: public.types
 
+ DROP TABLE public.policy;
  DROP TABLE public.types;
 
 CREATE TABLE public.types
@@ -28,10 +29,10 @@ CREATE TABLE public.types
 
 
 
-DELETE FROM public.types
+/*DELETE FROM public.types
 WHERE name = 'KASKO';
 DELETE FROM public.types
-WHERE name = 'National';
+WHERE name = 'National';*/
 INSERT INTO public.types(
   name)
 VALUES ('KASKO');
@@ -42,13 +43,13 @@ VALUES ('National');
 
 -- Table: public.policy
 
- DROP TABLE public.policy;
+
 
 CREATE TABLE public.policy
 (
   id uuid NOT NULL DEFAULT uuid_generate_v4(),
   id_type uuid,
-  company character(3) COLLATE pg_catalog."default",
+  id_company uuid,
   car_type character(1) COLLATE pg_catalog."default",
   id_period character(1) COLLATE pg_catalog."default",
   price numeric(17,2),

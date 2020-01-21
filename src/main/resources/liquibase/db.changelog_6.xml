@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- изменения полей вместе с созданием новой таблицы для покупки страховки -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+    <changeSet author="nin" id="addColumn-email">
+        <addColumn schemaName="public"
+                   tableName="users">
+            <column name="email" type="varchar(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="nin" id="addColumn-firstname">
+        <addColumn schemaName="public"
+                   tableName="users">
+            <column name="firstname" type="varchar(30)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="nin" id="addColumn-lastname">
+        <addColumn schemaName="public"
+                   tableName="users">
+            <column name="lastname" type="varchar(30)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="nin" id="addColumn-phone">
+        <addColumn schemaName="public"
+                   tableName="users">
+            <column name="phone" type="varchar(20)"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
